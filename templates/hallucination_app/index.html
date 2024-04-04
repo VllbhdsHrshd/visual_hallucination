@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+{% load widget_tweaks %}
+{% load static %}
+{% load socialaccount %}
+<html lang="en" dir="ltr">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{% static 'definitions.css' %}">
+  <title>Home</title>
+  <style>
+    .navbar_bgcolor {
+      background-color: #001a33;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="jumbotron jumbotron-fluid text-white text-center navbar_bgcolor" style="height:200px">
+    <div class="container">
+      <h2 style="font-size:50px;margin-top:-25px">Hallucination Annotation</h2>
+      <p style="font-size:30px">Data Collection</p>
+      <h6>
+        {% if not user.is_authenticated %}
+        <a href="{% provider_login_url 'google' %}">
+          LOGIN
+        </a>
+        {% else %}
+        <a href="{% url 'logout' %}">
+          LOGOUT
+        </a>
+        {% endif %}
+      </h6>
+    </div>
+  </div>
+  <div class="container-fluid h-100 text-dark " style="margin-top:30px">
+    <div class="row justify-content-center align-items-center h-100 ">
+      <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <form action="{% url 'data' %}" method="none" class="text-center">
+          {% if user.is_authenticated %}
+          {% comment %} {% csrf_token %} {% endcomment %}
+          <h4>Annotator Id: {{ user.id }} </h4>
+          {% comment %} <input type="text" name="id" required> {% endcomment %}
+          <button type="submit" class="btn btn-primary"
+            style="margin-left:5px;margin-top: 10px;border-radius:5px;width:100px">Start</button>
+          <a role="button" class="btn btn-success"
+            style="margin-left:5px;margin-top: 10px;border-radius:5px;width:100px" href="codes">Codes</a>
+        </form>
+        {% else %}
+        LOGIN TO CONTINUE
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="container row no-gutters" style="margin-top:30px;">
+    <div class="col col-md-6 col-sm-12">
+      <h5 style="color:#2F4F4F">Instructions for the annotation:</h5>
+      <ol type="1">
+
+        <li style="color:#2F4F4F"> Login with your Gmail ID </li>
+        <li style="color:#2F4F4F"> Hallucination is often defined as "generated content that is nonsensical or
+          unfaithful to the provided source content" </li>
+        <li style="color:#2F4F4F"> The "Prompt Input" was provided to the AI model and it generated the "AI Generated
+          Text" in response. "Human Written Text" is the factual article written by a human. Using the human written
+          text
+          and online resources identify whether the highlighted sentence in red from the "AI Generated Text" is
+          hallucination or not.</li>
+        <li style="color:#2F4F4F"> Select appropriate options for Orientation, Category and Degree of Hallucination
+          based
+          on the definitions and examples given alongside</li>
+      </ol>
+    </div>
+    <div class="col col-md-6 col-sm-12">
+      <div class="c14 doc-content">
+        <p class="c2"><span class="c8 c6 c9">Hallucination:</span></p>
+        <p class="c2 c4"><span class="c8 c6 c13"></span></p>
+        <p class="c2"><span class="c6 c15">Factual Mirage:</span><span class="c9">&nbsp;</span><span class="c0">Factual
+            mirage (FM) is defined as the phenomenon wherein an LLM engages in hallucination or distortion of a given
+            prompt that is factually correct. FM can potentially be subdivided into two distinct sub-categories.</span>
+        </p>
+        <p class="c2"><span class="c0">&nbsp; &nbsp;</span></p>
+        <ul class="c7 lst-kix_ly0ge5kkth94-0 start">
+          <li class="c2 c11 li-bullet-0"><span class="c8 c5 c6">Intrinsic factual mirage (IFM): </span></li>
+        </ul>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2"><span class="c5">&nbsp; &nbsp; </span><span class="c1">&nbsp;Prompt:</span><span
+            class="c0">&nbsp;Capital of France</span></p>
+        <p class="c2"><span class="c5">&nbsp; &nbsp; &nbsp;</span><span class="c1">AI-generated text:</span><span
+            class="c0">&nbsp;...Paris is also the world fashion capital&hellip; </span></p>
+        <p class="c2"><span class="c5">&nbsp; &nbsp; &nbsp;</span><span class="c1">Fact:</span><span
+            class="c0">&nbsp;Paris.
+          </span></p>
+        <p class="c2 c4"><span class="c8 c5 c6"></span></p>
+        <p class="c2"><span class="c5 c6">&nbsp; &nbsp; &nbsp;</span><span class="c0">In the folllowing example, the LLM
+            is
+            providing a correct response while adding &nbsp; &nbsp;</span></p>
+        <p class="c2"><span class="c0">&nbsp; &nbsp; &nbsp;additional supplementary facts such as &ldquo;the world
+            fashion
+            capital,&rdquo; resulting in distortion &nbsp; &nbsp; &nbsp;</span></p>
+        <p class="c2"><span class="c0">&nbsp; &nbsp; &nbsp; or hallucination.</span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <ul class="c7 lst-kix_6du3f471ykez-0 start">
+          <li class="c2 c11 li-bullet-0"><span class="c5 c6 c8">Extrinsic factual mirage (IFM): </span></li>
+        </ul>
+        <p class="c2 c4"><span class="c8 c5 c6"></span></p>
+        <p class="c2"><span class="c5 c6">&nbsp; &nbsp; &nbsp; </span><span class="c5">&nbsp;EFM refers to the
+            phenomenon
+            where an LLM deviates from factual accuracy.</span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2"><span class="c5">&nbsp; &nbsp;</span><span class="c1">&nbsp; &nbsp; Prompt:</span><span
+            class="c0">&nbsp;Engineering effort to build Eiffel tower</span></p>
+        <p class="c2"><span class="c5">&nbsp; &nbsp; &nbsp; </span><span class="c1">AI-generated text:</span><span
+            class="c0">&nbsp;...Designed by Gustave Eiffel, it was inaugurated in 1889 to &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp; &nbsp; &nbsp;</span></p>
+        <p class="c2"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;celebrate the 100th anniversary of the European Civil
+            War...</span></p>
+        <p class="c2"><span class="c5">&nbsp; </span><span class="c1">&nbsp; &nbsp; Fact:</span><span
+            class="c0">&nbsp;Eiffel tower was built to celebrate the 100th anniversary of</span></p>
+        <p class="c2"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;the French Revolution.</span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2"><span class="c0">We meticulously classify hallucination into six distinct types, defined and
+            exemplified below.</span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <ul class="c7 lst-kix_yz4vr8zg4qqu-0 start">
+          <li class="c2 c12 li-bullet-0"><span class="c5 c6">Numeric Nuisance (NN):</span><span class="c0">&nbsp;This
+              issue occurs when an LLM generates numeric values related to past events, such as dates, ages, or
+              monetary amounts, that are inconsistent with the actual facts. </span></li>
+        </ul>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2"><span class="c1">Prompt:</span><span class="c0">&nbsp;Twitter is said to have laid off more
+            workers.</span></p>
+        <p class="c2"><span class="c1">AI-generated text:</span><span class="c0">&nbsp;The layoffs come after Twitter
+            announced earlier this month that it would &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+          </span></p>
+        <p class="c2"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp;be cutting its global workforce by 8% or roughly 600 people...</span></p>
+        <p class="c2"><span class="c1">Fact:</span><span class="c0">&nbsp;Twitter laid off 200 people which is roughly
+            10%
+          </span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <ul class="c7 lst-kix_low3jzuxxcpr-0 start">
+          <li class="c2 c3 li-bullet-0"><span class="c5 c6">Acronym Ambiguity (AA):</span><span class="c0">&nbsp;This
+              issue pertains to instances in which LLMs generate an imprecise expansion for an acronym.</span></li>
+        </ul>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2"><span class="c1">Prompt:</span><span class="c0">&nbsp;RLHF in reinforcement learning</span></p>
+        <p class="c2"><span class="c1">AI-generated text:</span><span class="c0">&nbsp;...RLHF is Reward-free Learning
+            from
+            Human Feedback in </span></p>
+        <p class="c2"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;reinforcement learning...</span></p>
+        <p class="c2"><span class="c1">Fact:</span><span class="c0">&nbsp;RLHF stands for &ldquo;Reward Learning from
+            Adaptive Inference of Feedback&rdquo; </span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <ul class="c7 lst-kix_21ml29hxaduu-0 start">
+          <li class="c2 c3 li-bullet-0"><span class="c5 c6">Generated Golem (GG):</span><span class="c0">&nbsp;This
+              issue
+              arises when an LLM fabricates an imaginary personality in relation to a past event, without concrete
+              evidence. </span></li>
+        </ul>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2"><span class="c1">Prompt: </span><span class="c0">Earthquake in Turkey</span></p>
+        <p class="c2"><span class="c1">AI-generated text:</span><span class="c0">&nbsp;...One rescuer, Hasan Cetin, said
+            he
+            was motivated by the thought of &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></p>
+        <p class="c2"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;the survivors he helped save. &ldquo;The moment when a man or a child is
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></p>
+        <p class="c2"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; pulled out of the ruins, the joy of seeing them come back to life
+            is...</span></p>
+        <p class="c2"><span class="c1">Fact:</span><span class="c0">&nbsp;There is no evidence that the person Hasan
+            Cetin
+            exists. </span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <ul class="c7 lst-kix_klzvv9wt4lzt-0 start">
+          <li class="c2 c3 li-bullet-0"><span class="c5 c6">Virtual Voice (VV): </span><span class="c0">At times LLMs
+              generate quotations attributed to either fictional or real characters without sufficient evidence to
+              verify the authenticity of such statements. </span></li>
+        </ul>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2"><span class="c1">Prompt:</span><span class="c0">&nbsp;Pfizer Press Release on COVID-19
+            vaccine</span>
+        </p>
+        <p class="c2"><span class="c1">AI-generated text:</span><span class="c0">&nbsp;...Pfizer emphasized that their
+            vaccine demonstrated an impressive &nbsp; &nbsp; &nbsp; &nbsp; </span></p>
+        <p class="c2"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; efficacy rate... Pfizer CEO said, &nbsp;&ldquo;This is a giant leap for
+            humanity..&rdquo;...</span></p>
+        <p class="c2"><span class="c1">Fact:</span><span class="c0">&nbsp;Pfizer CEO never said this. In this instance,
+            the
+            expression giant leap for humanity is &nbsp; </span></p>
+        <p class="c2"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; quoted from Neil Armstrong&rsquo;s renowned
+            historical statement upon stepping onto the &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></p>
+        <p class="c2"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; moon. </span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <ul class="c7 lst-kix_kzdyv5p1xfnr-0 start">
+          <li class="c2 c3 li-bullet-0"><span class="c5 c6">Geographic Erratum (GE):</span><span class="c0">&nbsp;This
+              problem occurs when LLMs generate an incorrect location &nbsp;</span></li>
+        </ul>
+        <p class="c2"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; associated with
+            an event. For example Pentagon stated to &nbsp; &nbsp; &nbsp;</span></p>
+        <p class="c2"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;be situated in India. </span>
+        </p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2"><span class="c1">Prompt:</span><span class="c0">&nbsp;Prime Minister of the United Kingdom
+            visiting
+            India</span></p>
+        <p class="c2"><span class="c1">AI-generated text:</span><span class="c0">&nbsp;...The visit of the United
+            Kingdom&rsquo;s Prime Minister to India holds &nbsp;</span></p>
+        <p class="c2"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp;immense significance...During his journey, he will also pay a visit to the
+          </span></p>
+        <p class="c2"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp;Pentagon where he is scheduled to meet with Smriti Irani.</span></p>
+        <p class="c2"><span class="c1">Fact:</span><span class="c0">&nbsp;Pentagon is the defense headquarters of the
+            USA,
+            located</span></p>
+        <p class="c2"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;In Washington DC, USA &ndash; not in
+            India.</span>
+        </p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <ul class="c7 lst-kix_76fhoeovryar-0 start">
+          <li class="c2 c12 li-bullet-0"><span class="c5 c6">Time Wrap (TW):</span><span class="c0">&nbsp;This problem
+              entails LLMs generating text that exhibits a mashed fusion of events from different timelines. in the
+              following case the U.S. president during the Ukraine-Russia war is Joe Biden, not Barack Obama, thus
+              contradicting the factual reality.</span></li>
+        </ul>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2"><span class="c1">Prompt:</span><span class="c0">&nbsp;USA on Ukraine war</span></p>
+        <p class="c2"><span class="c1">AI-generated text:</span><span class="c0">&nbsp;...U.S. President Barack Obama
+            says
+            the U.S. will not put troops in &nbsp; &nbsp;</span></p>
+        <p class="c2"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; Ukraine...</span></p>
+        <p class="c2"><span class="c1">Fact:</span><span class="c0">&nbsp;The actual U.S. president during the
+            Ukraine-Russia war is</span></p>
+        <p class="c2"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Joe Biden</span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2 c4"><span class="c0"></span></p>
+        <p class="c2 c4"><span class="c6 c10"></span></p>
+        <p class="c2 c4"><span class="c10 c6"></span></p>
+      </div>
+    </div>
+
+
+  </div>
+
+
+
+
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+
+
+
+</body>
+
+</html>
